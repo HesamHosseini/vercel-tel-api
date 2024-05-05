@@ -3,14 +3,6 @@ require('dotenv').config();
 const fs = require('fs');
 
 
-const client = new S3Client({
-  region: 'default',
-  endpoint: process.env.LIARA_ENDPOINT,
-  credentials: {
-    accessKeyId: process.env.LIARA_ACCESS_KEY,
-    secretAccessKey: process.env.LIARA_SECRET_KEY
-  }
-});
 
 function writeDB(jsonObject, filePath) {
 // Convert JSON data to string
@@ -20,10 +12,10 @@ function writeDB(jsonObject, filePath) {
 }
 
 function readDB(filePath, callback) {
-  debugger
+  
   let data;
   fs.readFile(filePath, 'utf8', (err, data) => {
-    debugger
+    
     if (err) {
       console.error('Error reading file:', err);
       callback(err, null);
