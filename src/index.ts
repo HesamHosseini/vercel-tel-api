@@ -4,6 +4,7 @@ import { start } from './commands';
 // import { greeting } from './text';
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { development, production } from './core';
+import { writeIntoDB } from './Utils/util';
 
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const ENVIRONMENT = process.env.NODE_ENV || '';
@@ -13,6 +14,15 @@ bot.use(session());
 // bot.command('about', about());
 bot.command('start', start());
 bot.on('text', handleTextMessage());
+
+
+writeIntoDB(
+  {
+    RegisteredUsers: [
+      { id: 79388826, uuid: 'f7d27d19-5390-420b-943f-f6289731f2a9' },
+      { id: 110958425, uuid: '97a97404-bdc7-4ef3-b129-50ac32041a7e' }
+    ]
+  }, 'TelBot/DB.json');
 // bot.on("text", (ctx) => {
 //   // debugger
 //   // Check if the text message is a reply to the original message
