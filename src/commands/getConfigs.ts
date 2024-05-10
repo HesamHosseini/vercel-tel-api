@@ -1,19 +1,19 @@
 import { Context } from 'telegraf';
 import { getAllConfigs } from '../Utils/Hiddify';
-import { readDB } from '../Utils/util';
+import { readFromDB } from '../Utils/util';
 
 const getConfigs = () => {
-  debugger
   return async (ctx: Context) => {
 
 
-    readDB('api/DB/DB.json', async (error, data) => {
-      if (error) {
-        console.error(error);
-      } else {
-        debugger
-        const users = data.RegisteredUsers || [];
-        const foundedUser = users.find((user: { id: number; uuid: string }) => user.id === ctx.message?.from.id);
+    const data = await readFromDB('TelBot/DB.json');
+
+    if (typeof (data) === 'object') {
+      const users = data.RegisteredUsers;
+      const foundedUser = users.find((user: { id: number; uuid: string }) => user.id === ctx.message?.from.id);
+
+      if (foundedUser) {
+
         const allConfigs = await getAllConfigs(foundedUser.uuid);
 
 
@@ -59,15 +59,31 @@ const getConfigs = () => {
 
 
           }
+
+
         }
       }
-    })
-    ;
+    }
 
-
-    // console.log(foundedUser);
+    if (data) {
+    }
   };
-
+//     const users = data.RegisteredUsers || [];
 
 };
+
+//
+// readFromDB('TelBot/DB.json', async (error, data) => {
+//   if (error) {
+//     console.error(error);
+//   } else {
+//     debugger
+//
+// })
+// ;
+
+
+// console.log(foundedUser);
+
+
 export { getConfigs };

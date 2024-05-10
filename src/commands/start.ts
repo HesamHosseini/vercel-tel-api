@@ -16,9 +16,9 @@ const start = () => async (ctx: Context) => {
 //   // web_app: { url : "https://google.com" },
 //   type: 'commands'
 // })
-   await ctx.reply(welcomeText );
+  await ctx.reply(welcomeText);
 
-  };
+};
 
 
 export { start };

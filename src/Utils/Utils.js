@@ -3,7 +3,6 @@ require('dotenv').config();
 const fs = require('fs');
 
 
-
 function writeDB(jsonObject, filePath) {
 // Convert JSON data to string
   const jsonString = JSON.stringify(jsonObject, null, 2);
@@ -11,11 +10,11 @@ function writeDB(jsonObject, filePath) {
   console.log(`file${filePath} created `);
 }
 
-function readDB(filePath, callback) {
-  
+function readFromDB(filePath, callback) {
+
   let data;
   fs.readFile(filePath, 'utf8', (err, data) => {
-    
+
     if (err) {
       console.error('Error reading file:', err);
       callback(err, null);
@@ -47,4 +46,4 @@ function uploadDB(filePath) {
 }
 
 
-module.exports = { readDB, writeDB };
+module.exports = { readFromDB, writeDB };

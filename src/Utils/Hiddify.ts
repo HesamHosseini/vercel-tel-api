@@ -19,6 +19,7 @@ export async function getAllConfigs(uuid: string) {
 
   }
 }
+
 export async function getAllInfo(uuid: string) {
 
   const BASE_URL = process.env.HIDDIFY_PANEL_BASE_URL;

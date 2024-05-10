@@ -1,40 +1,30 @@
 import { Context } from 'telegraf';
-import { readDB, writeDB } from '../Utils/util';
+import { readFromDB, User, writeIntoDB } from '../Utils/util';
 import { getAllConfigs } from '../Utils/Hiddify';
 
 export const registerUUID = async (ctx: Context, uuid: string) => {
   debugger
 
-  readDB('api/DB/DB.json', async (error, jsonData) => {
 
-    debugger
+  const data = await readFromDB('TelBot/DB.json');
+  if (typeof (data) === 'object') {
+    const foundedIndex = data.RegisteredUsers.findIndex((item: {
+      id: number | undefined,
+      uuid: string
+    }) => item.id === ctx.message?.from.id);
 
-    if (error) {
-      console.log('an Error happened : ', error.message);
-      await ctx.reply('مشکلی پیش اومده : ' + error.message);
+    if (foundedIndex > -1) {
+      data.RegisteredUsers[foundedIndex].uuid = uuid;
+      await writeIntoDB(data, 'TelBot/DB.json');
+
 
     } else {
 
-      const foundedIndex = jsonData.RegisteredUsers.findIndex((item: {
-        id: number | undefined,
-        uuid: string
-      }) => item.id === ctx.message?.from.id);
-      if (foundedIndex > -1) {
+      const newUser: User = { id: Number(ctx.message?.from.id), uuid: uuid };
 
-        jsonData.RegisteredUsers[foundedIndex].uuid = uuid;
-        writeDB(jsonData, 'api/DB/DB.json');
+      data.RegisteredUsers.push(newUser);
 
-      } else {
-        jsonData.RegisteredUsers.push(
-          {
-            id: ctx.message?.from.id,
-            uuid: uuid
-          });
-
-        writeDB(jsonData, 'api/DB/DB.json');
-
-
-      }
+      await writeIntoDB(data, 'TelBot/DB.json');
       const options = {
         reply_markup: {
 
@@ -60,10 +50,9 @@ export const registerUUID = async (ctx: Context, uuid: string) => {
       await ctx.reply('✅ آی دی شما با موفقیت برای این اکانت ثبت شد! 🎉به پنلت خوش اومدی  \n', options);
 
     }
-  });
 
 
-  // await ctx.reply(ctx.message.from.id.toString());
+  }
 
 };
 
